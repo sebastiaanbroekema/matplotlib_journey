@@ -8,7 +8,6 @@ url = "https://raw.githubusercontent.com/JosephBARBIERDARNAL/data-matplotlib-jou
 df = pd.read_csv(url)
 
 
-
 gdf = gpd.GeoDataFrame(
     df, geometry=gpd.points_from_xy(df.longitude, df.latitude), crs="EPSG:4326"
 ).to_crs(epsg=3857)
@@ -24,7 +23,7 @@ gdf.loc[lambda x: x.neighbourhood_group == "Manhattan"].plot(
     scheme="Quantiles",
     classification_kwds={"k": 10},
     categorical=True,
-    markersize=5
+    markersize=5,
 )
 
 ax.get_legend().set_title("Price per night ($)")
@@ -32,8 +31,8 @@ ax.get_legend().set_title("Price per night ($)")
 
 cx.add_basemap(ax, zoom=13)
 ax.axis("off")
-ax.set_title('Better Airbnb deals in the north of Manhattan')
+ax.set_title("Better Airbnb deals in the north of Manhattan")
 plt.tight_layout()
-# plt.show(block=False)
+
 
 fig.savefig("NY_airbnb_price.png", dpi=500)
