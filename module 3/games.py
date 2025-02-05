@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from highlight_text import fig_text
+from highlight_text import fig_text, ax_text
 from pypalettes import load_cmap
 from drawarrow import fig_arrow
 from pyfonts import load_font
@@ -40,7 +40,7 @@ percentage = (
         grouped.Global_Sales, axis=0
     )
     * 100
-).reset_index()
+).reset_index().sort_values(by="NA_Sales")
 
 
 text_props = [{"color": color} for color in cmap.colors]
@@ -51,12 +51,12 @@ fig.subplots_adjust(top=0.725, right=0.725, left=0.2)
 ax.set_xlim(0, 100)
 
 percentage.set_index("Genre").plot(
-    kind="barh", stacked=True, ax=ax, colormap=cmap, legend=False
+    kind="barh", stacked=True, ax=ax, colormap=cmap, legend=False, zorder=1
 )
 
 
 fig_text(
-    0.05,
+    0.2,
     0.95,
     "Share of game sales in\n<North America>, <Europa>, <Japan>\nand <the rest of the world>",
     highlight_textprops=text_props,
@@ -65,24 +65,18 @@ fig_text(
     ax=ax,
 )
 
-ax.grid(which="major", axis="x", linestyle="--")
-
-# blah = ax_arrow((110, 8), )
-
-disp_arrow = ax.transData.transform((75, 7))
-
-
 # Convert display coordinates to figure coordinates
+disp_arrow = ax.transData.transform((75, 0))
 fig_coords_arrow = fig.transFigure.inverted().transform(disp_arrow)
 
-fig_arrow((0.73, 0.5), fig_coords_arrow, radius=0.1)
+fig_arrow((0.73, 0.15), fig_coords_arrow, radius=0.1)
 fig_text(
     0.73,
-    0.5,
+    0.2,
     "The only genre where\nNorth America is not\nnumber one in sale share\n<35%> vs <38%>",
     highlight_textprops=[
-        text_props[0] | {"font": bold},
-        text_props[2] | {"font": bold},
+        text_props[0],# | {"font": bold},
+        text_props[2],# | {"font": bold},
     ],
     size=10,
     va="center",
@@ -97,7 +91,7 @@ ax.set_xticks(x_step, [f"{x}%" for x in x_step], font=regular)
 for label in  ax.get_yticklabels():
     label.set_fontproperties(regular)
 
-print(ax.get_xticklabels())
+
 
 ax.set_ylabel("")
 
@@ -111,5 +105,19 @@ sns.despine(
 
 fig.set_facecolor(background)
 ax.set_facecolor(background)
+
+
+for index, row in percentage.reset_index(drop = True).iterrows():
+    pos = 0
+    copy_ = row.copy()
+    if row[0] == "Shooter":
+        # pos += row[-2]
+        row.iloc[-2] = 0
+        # row[-1] = 0
+    for item, increment in zip(row.iloc[1:], copy_.iloc[1:]):
+        if item:
+            _ = ax_text(pos, index, f"{round(item)}%", va="center", font=regular)
+
+        pos += increment
 
 plt.show(block=False)
