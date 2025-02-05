@@ -1,11 +1,10 @@
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
-
-from highlight_text import fig_text, ax_text
-from pypalettes import load_cmap
 from drawarrow import fig_arrow
+from highlight_text import ax_text, fig_text
 from pyfonts import load_font
+from pypalettes import load_cmap
 
 cmap = load_cmap("AsteroidCity3")
 google_font = "https://github.com/google/fonts/blob/main"
@@ -36,11 +35,15 @@ grouped = df.groupby("Genre")[
 
 
 percentage = (
-    grouped[["NA_Sales", "EU_Sales", "JP_Sales", "Other_Sales"]].div(
-        grouped.Global_Sales, axis=0
+    (
+        grouped[["NA_Sales", "EU_Sales", "JP_Sales", "Other_Sales"]].div(
+            grouped.Global_Sales, axis=0
+        )
+        * 100
     )
-    * 100
-).reset_index().sort_values(by="NA_Sales")
+    .reset_index()
+    .sort_values(by="NA_Sales")
+)
 
 
 text_props = [{"color": color} for color in cmap.colors]
@@ -58,7 +61,7 @@ percentage.set_index("Genre").plot(
 fig_text(
     0.2,
     0.95,
-    "Share of game sales in\n<North America>, <Europa>, <Japan>\nand <the rest of the world>",
+    "Share of game genre sales between\n<North America>, <Europa>, <Japan>\nand <the rest of the world>",
     highlight_textprops=text_props,
     font=bold,
     size=16,
@@ -75,8 +78,8 @@ fig_text(
     0.2,
     "The only genre where\nNorth America is not\nnumber one in sale share\n<35%> vs <38%>",
     highlight_textprops=[
-        text_props[0],# | {"font": bold},
-        text_props[2],# | {"font": bold},
+        text_props[0],  # | {"font": bold},
+        text_props[2],  # | {"font": bold},
     ],
     size=10,
     va="center",
@@ -88,9 +91,8 @@ x_step = [0, 20, 40, 60, 80, 100]
 ax.tick_params(top=True, labeltop=True, bottom=False, labelbottom=False, length=0)
 ax.set_xticks(x_step, [f"{x}%" for x in x_step], font=regular)
 
-for label in  ax.get_yticklabels():
+for label in ax.get_yticklabels():
     label.set_fontproperties(regular)
-
 
 
 ax.set_ylabel("")
@@ -107,7 +109,7 @@ fig.set_facecolor(background)
 ax.set_facecolor(background)
 
 
-for index, row in percentage.reset_index(drop = True).iterrows():
+for index, row in percentage.reset_index(drop=True).iterrows():
     pos = 0
     copy_ = row.copy()
     if row[0] == "Shooter":
