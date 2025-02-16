@@ -67,7 +67,7 @@ cmap = load_cmap('', keep_first_n=3)
 
 fig, ax = plt.subplots()
 
-pie_chart_input.set_geometry("geom_left").plot(color='red', ax=ax)
+pie_chart_input.set_geometry("geom_left").plot(color='red', ax=ax, zorder=1)
 
 
 neighberhoods = pie_chart_input.ntaname.unique()
@@ -78,15 +78,15 @@ for hood in neighberhoods:
     label = hood_data.room_type
     values = hood_data.price
     center = (hood_data.centroid.iloc[0].x, hood_data.centroid.iloc[0].y)
-# https://stackoverflow.com/questions/56277645/pie-charts-and-geopandas-map
+    print(center)
+# # https://stackoverflow.com/questions/56277645/pie-charts-and-geopandas-map
     piecolors = ["tab:purple", "tab:blue", "tab:red"]
     wedges = plt.pie(
         values,
-        labels=label,
+        # labels=label,
         colors = piecolors,
         radius= 0.1,)
     for j in range(3):
-        print(center)
-        ax.scatter([center[0]],[center[1]],marker=(wedges[0][j].get_path().vertices.tolist()),facecolor=piecolors[j], s=800)
+        ax.scatter([center[0]],[center[1]],marker=(wedges[0][j].get_path().vertices.tolist()),facecolor=piecolors[j], s=5)
 
 plt.show()
