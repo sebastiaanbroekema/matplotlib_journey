@@ -381,7 +381,7 @@ dependencies = [
     { name = "matplotlib" },
     { name = "pandas" },
     { name = "pyarrow" },
-    { name = "pyfont" },
+    { name = "pyfonts" },
     { name = "pypalettes" },
     { name = "seaborn" },
 ]
@@ -400,7 +400,7 @@ requires-dist = [
     { name = "matplotlib", specifier = ">=3.10.1" },
     { name = "pandas", specifier = ">=2.2.3" },
     { name = "pyarrow", specifier = ">=19.0.1" },
-    { name = "pyfont", specifier = ">=0.0.3.20041618" },
+    { name = "pyfonts", specifier = ">=0.0.2" },
     { name = "pypalettes", specifier = ">=0.1.5" },
     { name = "seaborn", specifier = ">=0.13.2" },
 ]
@@ -542,12 +542,15 @@ wheels = [
 ]
 
 [[package]]
-name = "pyfont"
-version = "0.0.3.20041618"
+name = "pyfonts"
+version = "0.0.2"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/de/2c/76206a615bc64270b5e1897e2a1ed6b2ed196da9d66f2b3a90662fc65184/pyfont-0.0.3.20041618.tar.gz", hash = "sha256:cd5eef40c5b0cd0a6491fdbc4dce9b6f8db35f72069e72c1db65d5aa04812287", size = 13223 }
+dependencies = [
+    { name = "matplotlib" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/09/33/1631ddc10e98164cc2808ed13c81f3e68eca29784d8951805b11dde32325/pyfonts-0.0.2.tar.gz", hash = "sha256:d942ee84db70c33a0a553619a52bff6bf2091c7751648f0f7ca09c56466d254d", size = 5695 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/70/e5/ac16e4dbd08767a6e47588b09a30d405e7e0ed21f5c86ee6e21704eeac23/pyfont-0.0.3.20041618-py3-none-any.whl", hash = "sha256:d782095fc9dc314cfc467ff8bf124ad66058970b2a9474b1c6b09e0791471171", size = 14013 },
+    { url = "https://files.pythonhosted.org/packages/a1/00/0aebe94c3a55d27a8be1419c577f5f61fd593a8d4b7f18e79559127c6478/pyfonts-0.0.2-py3-none-any.whl", hash = "sha256:8f51c3b6bdb64efdc422d2b3d0aa69c5bb95f90e7419cbc026e90c18aa30ca06", size = 7454 },
 ]
 
 [[package]]
