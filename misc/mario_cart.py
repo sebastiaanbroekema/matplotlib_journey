@@ -128,7 +128,7 @@ ax_arrow(
 )
 
 ax_text(
-    s="Fastes <shortcut> record finishes compleet track in 25.3 seconds.",
+    s="Fastes <shortcut> record finishes complete track in 25.3 seconds.",
     x=2.5,
     y=1.5,
     ha="center",
