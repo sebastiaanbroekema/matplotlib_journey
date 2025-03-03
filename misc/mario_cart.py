@@ -3,9 +3,20 @@ import seaborn as sns
 from highlight_text import fig_text, ax_text
 from drawarrow import ax_arrow
 from pypalettes import load_cmap
-
-
+from pyfonts import load_font
 import pandas as pd
+
+
+font_url = "https://github.com/etunni/faster/blob/master/fonts/otf/FasterOne-Regular.otf?raw=true"
+
+font = load_font(font_url)
+
+
+roboto_font = {
+    "font": load_font(
+        "https://github.com/openmaptiles/fonts/blob/master/roboto/Roboto-Regular.ttf?raw=true"
+    )
+}
 
 url = url = (
     "https://raw.githubusercontent.com/JosephBARBIERDARNAL/data-matplotlib-journey/refs/heads/main/mariokart/mariokart.csv"
@@ -52,12 +63,16 @@ fig, ax = plt.subplots()
 sns.swarmplot(x=x, y=swarm, orient="h", hue=color, palette=cmap[:2], legend=False)
 ax.set_xlim(0, 3.05)
 ax.set_ylim(-5, 5)
-ax.axhspan(-1, 1, alpha=1, color="#c8d6e5", zorder=0)
-ax.axhline(1.05, color="red", linestyle="--")
-ax.axhline(-1.05, color="red", linestyle="--")
+ax.axhspan(-0.75, 0.75, alpha=1, color="#c8d6e5", zorder=0)
+ax.axhline(0.8, color="red", linestyle="--")
+ax.axhline(-0.8, color="red", linestyle="--")
 
 ax.vlines(
-    [1, 2, 3], ymin=-1, ymax=1, colors=["white", "white", "white"], linestyles="--"
+    [1, 2, 3],
+    ymin=-0.75,
+    ymax=0.75,
+    colors=["white", "white", "white"],
+    linestyles="--",
 )
 
 ax.hlines(
@@ -68,23 +83,29 @@ ax.hlines(
 )
 ax.axis("off")
 
-ax_text(s="first lap", x=0.5, y=-1.3, ha="center")
-ax_text(s="second lap", x=1.5, y=-1.3, ha="center")
-ax_text(s="third lap", x=2.5, y=-1.3, ha="center")
+ax_text(s="First lap", x=0.5, y=-1.3, ha="center", **roboto_font)
+ax_text(s="Second lap", x=1.5, y=-1.3, ha="center", **roboto_font)
+ax_text(s="Third lap", x=2.5, y=-1.3, ha="center", **roboto_font)
 
 fig_text(
-    0.125, 0.8, "Non-shortcut users eat dust on Luigi Raceway\nfastest <shortcut> user is 5× faster than the slowest <non-shortcut> user.", weight="bold", size=14,
-    highlight_textprops=[{"color":cmap[1]},{"color":cmap[0]}]
+    0.125,
+    0.8,
+    "Non-shortcut users eat dust on Luigi Raceway\nfastest <shortcut> user is 5 times faster than the slowest <non-shortcut> user.",
+    weight="bold",
+    size=18,
+    highlight_textprops=[{"color": cmap[1]}, {"color": cmap[0]}],
+    font=font,
 )
 
 ax_text(
-    s="Slowest <non-shortcut record> just past halfway on lap 1\n as the fastest shortcut record finishes",
+    s="Slowest <non-shortcut record> just past halfway on lap 1\n as the fastest shortcut record finishes.",
     x=0.4,
     y=1.5,
     ha="center",
     va="bottom",
     size=12,
     highlight_textprops=[{"color": cmap[0]}],
+    **roboto_font,
 )
 
 
@@ -107,15 +128,15 @@ ax_arrow(
 )
 
 ax_text(
-    s="Fastes <shortcut> record finishes compleet track in 25.3 seconds",
+    s="Fastes <shortcut> record finishes compleet track in 25.3 seconds.",
     x=2.5,
     y=1.5,
     ha="center",
     va="bottom",
     size=12,
     highlight_textprops=[{"color": cmap[1]}],
+    **roboto_font,
 )
-
 
 
 plt.show(block=False)
