@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 from highlight_text import fig_text, ax_text
-from drawarrow import fig_arrow
+from drawarrow import ax_arrow
 from pypalettes import load_cmap
 
 
@@ -42,18 +42,80 @@ plot_frame = df.loc[
 # short cut and no short cut
 # strip plot? would be fun a real race feel to the plot
 
-fig, ax = plt.subplots()
 x = plot_frame["location"]
 y = plot_frame["marker_position"]
 swarm = plot_frame["swarm"]
 color = plot_frame["color"]
 
-sns.swarmplot(x=x, y=swarm, orient="h", hue=color, palette=cmap[:2], dodge=True)
-ax.set_xlim(0, 3)
+
+fig, ax = plt.subplots()
+sns.swarmplot(x=x, y=swarm, orient="h", hue=color, palette=cmap[:2], legend=False)
+ax.set_xlim(0, 3.05)
 ax.set_ylim(-5, 5)
-ax.axhspan(-1, 1, alpha=1, color="k")
-ax.axhline(0, color="white", linestyle="--")
+ax.axhspan(-1, 1, alpha=1, color="#c8d6e5", zorder=0)
+ax.axhline(1.05, color="red", linestyle="--")
+ax.axhline(-1.05, color="red", linestyle="--")
+
+ax.vlines(
+    [1, 2, 3], ymin=-1, ymax=1, colors=["white", "white", "white"], linestyles="--"
+)
+
+ax.hlines(
+    y=[-1.2] * 3,
+    xmin=[0.05, 1.05, 2.05],
+    xmax=[0.95, 1.95, 2.95],
+    colors=["#A3CB38"] * 3,
+)
 ax.axis("off")
+
+ax_text(s="first lap", x=0.5, y=-1.3, ha="center")
+ax_text(s="second lap", x=1.5, y=-1.3, ha="center")
+ax_text(s="third lap", x=2.5, y=-1.3, ha="center")
+
+fig_text(
+    0.125, 0.8, "Non-shortcut users eat dust on Luigi Raceway\nfastest <shortcut> user is 5× faster than the slowest <non-shortcut> user.", weight="bold", size=14,
+    highlight_textprops=[{"color":cmap[1]},{"color":cmap[0]}]
+)
+
+ax_text(
+    s="Slowest <non-shortcut record> just past halfway on lap 1\n as the fastest shortcut record finishes",
+    x=0.4,
+    y=1.5,
+    ha="center",
+    va="bottom",
+    size=12,
+    highlight_textprops=[{"color": cmap[0]}],
+)
+
+
+ax_arrow(
+    tail_position=(0.4, 1.5),
+    head_position=(0.570720, 0),
+    color=cmap[0],
+    head_width=4,
+    zorder=20,
+    fill_head=False,
+)
+
+ax_arrow(
+    tail_position=(2.5, 1.5),
+    head_position=(3, 0),
+    color=cmap[1],
+    head_width=4,
+    zorder=20,
+    fill_head=False,
+)
+
+ax_text(
+    s="Fastes <shortcut> record finishes compleet track in 25.3 seconds",
+    x=2.5,
+    y=1.5,
+    ha="center",
+    va="bottom",
+    size=12,
+    highlight_textprops=[{"color": cmap[1]}],
+)
+
 
 
 plt.show(block=False)
