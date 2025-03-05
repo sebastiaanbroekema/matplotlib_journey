@@ -62,7 +62,7 @@ color = plot_frame["color"]
 fig, ax = plt.subplots()
 sns.swarmplot(x=x, y=swarm, orient="h", hue=color, palette=cmap[:2], legend=False)
 ax.set_xlim(0, 3.05)
-ax.set_ylim(-5, 5)
+ax.set_ylim(-3, 3.5)
 ax.axhspan(-0.75, 0.75, alpha=1, color="#c8d6e5", zorder=0)
 ax.axhline(0.8, color="red", linestyle="--")
 ax.axhline(-0.8, color="red", linestyle="--")
@@ -87,14 +87,34 @@ ax_text(s="First lap", x=0.5, y=-1.3, ha="center", **roboto_font)
 ax_text(s="Second lap", x=1.5, y=-1.3, ha="center", **roboto_font)
 ax_text(s="Third lap", x=2.5, y=-1.3, ha="center", **roboto_font)
 
+
+ax.hlines(
+    y=[-2],
+    xmin=[0.05],
+    xmax=[2.95],
+    colors=["#c8d6e5"],
+)
+
+ax_text(
+    s="Position on the track based on average speed\nwhen the fastest record holder passes the finish line",
+    x=1.5,
+    y=-2.1,
+    ha="center",
+    **roboto_font,
+)
+
 fig_text(
     0.125,
-    0.8,
-    "Non-shortcut users eat dust on Luigi Raceway\nfastest <shortcut> user is 5 times faster than the slowest <non-shortcut> user.",
-    weight="bold",
-    size=18,
-    highlight_textprops=[{"color": cmap[1]}, {"color": cmap[0]}],
-    font=font,
+    0.85,
+    "<Non-shortcut users eat dust on Luigi Raceway>\nfastest <shortcut> user is 5 times faster than the slowest <non-shortcut> user.",
+    # weight="bold",
+    size=20,
+    highlight_textprops=[
+        {"font": font, "size": 34},
+        {"color": cmap[1]},
+        {"color": cmap[0]},
+    ],
+    **roboto_font,
 )
 
 ax_text(
@@ -128,7 +148,7 @@ ax_arrow(
 )
 
 ax_text(
-    s="Fastes <shortcut> record finishes complete track in 25.3 seconds.",
+    s="Fastest <shortcut> record finishes complete track in 25.3 seconds.",
     x=2.5,
     y=1.5,
     ha="center",
