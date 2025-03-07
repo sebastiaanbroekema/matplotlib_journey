@@ -65,10 +65,14 @@ total_houses = bar_frame["count"].sum()
 fig, ax = plt.subplots()
 
 
-ax.barh(y=bar_frame.quantile_values, width=bar_frame["count"], color=bar_frame.color)
-sns.despine(ax=ax, left=True, bottom=True)
-ax.tick_params(length=0, labelbottom="off", labelsize=16)
-ax.set_xticklabels([])
+
+
+ax_child = ax.inset_axes([0.6, 0, 0.4, 0.4])
+
+ax_child.barh(y=bar_frame.quantile_values.astype(str).index, width=bar_frame["count"], color=bar_frame.color)
+sns.despine(ax=ax_child, left=True, bottom=True)
+ax_child.tick_params(length=0, labelbottom="off", labelsize=12)
+ax_child.set_xticklabels([])
 for i, count in enumerate(bar_frame["count"]):
     ax_text(
         count,
@@ -77,22 +81,11 @@ for i, count in enumerate(bar_frame["count"]):
         va="center",
         ha="right",
         weight="bold",
-        size=16,
+        size=10,
         color="white",
+        ax=ax_child
     )
-
-ax.set_yticklabels(ax.get_yticklabels(), fontweight="bold")
-
-
-
-
-
-
-
-
-
-
-
+ax_child.set_yticks([0,1,2,3,4,5], labels=quantile_labels, fontweight="bold")
 
 
 # TODO: set title of the child axis later
