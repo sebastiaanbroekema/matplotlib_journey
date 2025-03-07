@@ -45,9 +45,9 @@ utrecht = utrecht.assign(
 
 # second to last is the grey one
 # red, orange, yellow, teal, grey, dark blue
-# D72000FF, #EE6100FF, #FFAD0AFF, #1BB6AFFF, #9093A2FF, #132157FF
+# D72000FF, #EE6100, #FFAD0A, #1BB6AF, #9093A2, #132157
 
-colors = ("#9093A2FF", "#D72000FF", "#EE6100FF", "#FFAD0AFF", "#1BB6AFFF", "#132157FF")
+colors = ("#9093A2", "#D72000", "#EE6100", "#FFAD0A", "#1BB6AF", "#132157")
 
 
 color_dict = {i: j for i, j in zip(quantile_labels, colors)}
@@ -62,12 +62,22 @@ bar_frame = (
 total_houses = bar_frame["count"].sum()
 
 
-fig, ax = plt.subplots()
+utrecht = (
+    utrecht.assign(color=lambda x: x.quantile_values.map(color_dict))
+)
+
+fig, ax = plt.subplots(figsize=(20,15))
+
+ax.axis("off")
+
+utrecht.plot(
+    ax=ax,
+    legend=False,
+    color=utrecht.color
+)
 
 
-
-
-ax_child = ax.inset_axes([0.6, 0, 0.4, 0.4])
+ax_child = ax.inset_axes([0.80, -0.1, 0.3, 0.7])
 
 ax_child.barh(y=bar_frame.quantile_values.astype(str).index, width=bar_frame["count"], color=bar_frame.color)
 sns.despine(ax=ax_child, left=True, bottom=True)
@@ -85,8 +95,11 @@ for i, count in enumerate(bar_frame["count"]):
         color="white",
         ax=ax_child
     )
-ax_child.set_yticks([0,1,2,3,4,5], labels=quantile_labels, fontweight="bold")
+ax_child.set_yticks([0,1,2,3,4,5], labels=quantile_labels[::-1], fontweight="bold")
 
 
 # TODO: set title of the child axis later
+
+# fig.savefig('childplot.png')
+fig.savefig("utrecht.png")
 plt.show(block=False)
