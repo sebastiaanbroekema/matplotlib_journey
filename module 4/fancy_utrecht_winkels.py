@@ -2,7 +2,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from highlight_text import fig_text, ax_text
 from drawarrow import fig_arrow
-from pypalettes import load_cmap
+import matplotlib.patches as patches
+
 
 from mapclassify import Quantiles
 
@@ -47,8 +48,8 @@ utrecht = utrecht.assign(
 # red, orange, yellow, teal, grey, dark blue
 # D72000FF, #EE6100, #FFAD0A, #1BB6AF, #9093A2, #132157
 
-colors = ("#9093A2", "#D72000", "#EE6100", "#FFAD0A", "#1BB6AF", "#132157")
-
+# colors = ("#9093A2", "#D72000", "#EE6100", "#FFAD0A", "#1BB6AF", "#132157")
+colors = ("#1BB6AF", "#9093A2", "#132157", "#FFAD0A", "#EE6100", "#D72000")
 
 color_dict = {i: j for i, j in zip(quantile_labels, colors)}
 
@@ -73,16 +74,21 @@ ax.axis("off")
 utrecht.plot(
     ax=ax,
     legend=False,
-    color=utrecht.color
+    color=utrecht.color,
+    zorder = 0
 )
 
+rect = patches.Rectangle((0.70, -0.1), 0.3, 0.8, linewidth=0, facecolor='white', zorder = 5, transform = ax.transAxes)
 
-ax_child = ax.inset_axes([0.80, -0.1, 0.3, 0.7])
+ax.add_patch(rect)
+
+ax_child = ax.inset_axes([0.85, -0.1, 0.3, 0.7], zorder=10)
 
 ax_child.barh(y=bar_frame.quantile_values.astype(str).index, width=bar_frame["count"], color=bar_frame.color)
 sns.despine(ax=ax_child, left=True, bottom=True)
 ax_child.tick_params(length=0, labelbottom="off", labelsize=12)
 ax_child.set_xticklabels([])
+
 for i, count in enumerate(bar_frame["count"]):
     ax_text(
         count,
@@ -101,5 +107,5 @@ ax_child.set_yticks([0,1,2,3,4,5], labels=quantile_labels[::-1], fontweight="bol
 # TODO: set title of the child axis later
 
 # fig.savefig('childplot.png')
-fig.savefig("utrecht.png")
+fig.savefig("utrecht2.png", dpi=600)
 plt.show(block=False)
