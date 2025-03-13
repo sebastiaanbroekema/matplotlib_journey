@@ -3,10 +3,11 @@ import seaborn as sns
 from highlight_text import fig_text, ax_text
 from drawarrow import fig_arrow
 import matplotlib.patches as patches
-
+from matplotlib import style
 
 from mapclassify import Quantiles
 
+style.use("fast")
 import geopandas as gpd
 import pandas as pd
 
@@ -26,13 +27,21 @@ quantiles = Quantiles(utrecht.loc[lambda x: x.amount > 0, "amount"], k=5)
 # ( 39.00, 514.00] | 198077
 
 
+
+
 quantile_labels = [
     "No shops",
     "1 to 5 shops",
     "6 to 10 shops",
-    "11 to 18 shops",
-    "18 to 39 shops",
-    "39+ shops",
+    "11 to 15 shops",
+    "16 to 20 shops",
+    "20+ shops",
+]
+
+
+
+quantile_bins = [
+    1, 5,10,15,20,2500
 ]
 
 utrecht = utrecht.assign(
@@ -43,13 +52,26 @@ utrecht = utrecht.assign(
     .replace("nan", quantile_labels[0])
 )
 
+utrecht = utrecht.assign(
+    quantile_values=pd.cut(
+        utrecht.amount, quantile_bins, labels=quantile_labels[1:]
+    )
+    .astype(str)
+    .replace("nan", quantile_labels[0])
+    
+)
 
 # second to last is the grey one
 # red, orange, yellow, teal, grey, dark blue
 # D72000FF, #EE6100, #FFAD0A, #1BB6AF, #9093A2, #132157
 
 # colors = ("#9093A2", "#D72000", "#EE6100", "#FFAD0A", "#1BB6AF", "#132157")
-colors = ("#1BB6AF", "#9093A2", "#132157", "#FFAD0A", "#EE6100", "#D72000")
+# colors = ("#9093A2", "#132157", "#1BB6AF", "#FFAD0A", "#EE6100", "#D72000")
+colors = ("#badbdb", "#dedad2", "#e4bcad", "#df979e", "#d7658b", "#c80064")
+text_color = "#f1f2f6"
+# background="#2f3542"
+background = "#1e272e"
+background = "#060C0C"
 
 color_dict = {i: j for i, j in zip(quantile_labels, colors)}
 
@@ -63,30 +85,43 @@ bar_frame = (
 total_houses = bar_frame["count"].sum()
 
 
-utrecht = (
-    utrecht.assign(color=lambda x: x.quantile_values.map(color_dict))
-)
+utrecht = utrecht.assign(color=lambda x: x.quantile_values.map(color_dict))
 
-fig, ax = plt.subplots(figsize=(20,15))
+
+fig, ax = plt.subplots(figsize=(20, 15))
 
 ax.axis("off")
-
-utrecht.plot(
-    ax=ax,
-    legend=False,
-    color=utrecht.color,
-    zorder = 0
+(
+    utrecht
+    # .sample(frac=0.2)
+    .plot(
+        ax=ax,
+        legend=False,
+        color=utrecht.color,
+        zorder=-5,
+    )
 )
-
-rect = patches.Rectangle((0.70, -0.1), 0.3, 0.8, linewidth=0, facecolor='white', zorder = 5, transform = ax.transAxes)
+rect = patches.Rectangle(
+    (0.60, -0.1),
+    0.5,
+    0.6,
+    linewidth=0,
+    facecolor=background,
+    zorder=0,
+    transform=ax.transAxes,
+)
 
 ax.add_patch(rect)
 
-ax_child = ax.inset_axes([0.85, -0.1, 0.3, 0.7], zorder=10)
+ax_child = ax.inset_axes([0.7, 0.2, 0.175, 0.175], zorder=10, transform=fig.transFigure)
 
-ax_child.barh(y=bar_frame.quantile_values.astype(str).index, width=bar_frame["count"], color=bar_frame.color)
+ax_child.barh(
+    y=bar_frame.quantile_values.astype(str).index,
+    width=bar_frame["count"],
+    color=bar_frame.color,
+)
 sns.despine(ax=ax_child, left=True, bottom=True)
-ax_child.tick_params(length=0, labelbottom="off", labelsize=12)
+ax_child.tick_params(length=0, labelbottom="off", labelsize=10)
 ax_child.set_xticklabels([])
 
 for i, count in enumerate(bar_frame["count"]):
@@ -97,15 +132,53 @@ for i, count in enumerate(bar_frame["count"]):
         va="center",
         ha="right",
         weight="bold",
-        size=10,
-        color="white",
-        ax=ax_child
+        size=8,
+        color=background,
+        ax=ax_child,
     )
-ax_child.set_yticks([0,1,2,3,4,5], labels=quantile_labels[::-1], fontweight="bold")
+ax_child.set_yticks([0, 1, 2, 3, 4, 5], labels=quantile_labels[::-1], fontweight="bold", color=text_color)
+
+
 
 
 # TODO: set title of the child axis later
+# [0.7, 0.2, 0.175, 0.175]
+fig_text(
+    x=0.73,
+    y=0.39,
+    ha="center",
+    va="bottom",
+    s="Share of amount of shops",
+    weight="bold",
+    size=12,
+    zorder=20,
+    color=text_color
+)
+fig_text(
+    x=0.5,
+    y=0.88,
+    va="bottom",
+    ha="center",
+    s="How many shops are within a 20 minute roundtrip walk in Utrecht",
+    weight="bold",
+    size=20,
+    color=text_color
+)
 
-# fig.savefig('childplot.png')
-fig.savefig("utrecht2.png", dpi=600)
-plt.show(block=False)
+fig_text(
+    x = 0.5,
+    y = 0.10,
+    s="sources:\nVisualisation:Sebastiaan Broekema\nBAG register for building polygons, KvK for shop locations Walking distances calculated by isochrone distances using open route service.",
+    size=10,
+    color=text_color,
+    ha="center"
+)
+
+
+
+ax_child.set_facecolor(background)
+fig.set_facecolor(background)
+ax.set_facecolor(background)
+fig.savefig('utrecht.jpeg')
+fig.savefig("utrecht1200_dpi.png", dpi=1200)
+# plt.show(block=False)
