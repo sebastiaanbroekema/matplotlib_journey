@@ -113,7 +113,7 @@ rect = patches.Rectangle(
 
 ax.add_patch(rect)
 
-ax_child = ax.inset_axes([0.7, 0.2, 0.175, 0.175], zorder=10, transform=fig.transFigure)
+ax_child = ax.inset_axes([0.65, 0.2, 0.175, 0.175], zorder=10, transform=fig.transFigure)
 
 ax_child.barh(
     y=bar_frame.quantile_values.astype(str).index,
@@ -159,9 +159,9 @@ fig_text(
     y=0.88,
     va="bottom",
     ha="center",
-    s="How many shops are within a 20 minute roundtrip walk in Utrecht",
+    s="How many shops are within a 20 minute roundtrip walk in Utrecht NL",
     weight="bold",
-    size=20,
+    size=32,
     color=text_color
 )
 
@@ -169,7 +169,7 @@ fig_text(
     x = 0.5,
     y = 0.10,
     s="sources:\nVisualisation:Sebastiaan Broekema\nBAG register for building polygons, KvK for shop locations Walking distances calculated by isochrone distances using open route service.",
-    size=10,
+    size=12,
     color=text_color,
     ha="center"
 )
