@@ -15,9 +15,10 @@ regular = {
         "https://github.com/hafontia-zz/Assistant/blob/master/Fonts/TTF/Assistant-Regular.ttf?raw=true"
     )
 }
+
 bold = {
     "font": load_font(
-        "https://github.com/hafontia-zz/Assistant/blob/master/Fonts/TTF/Assistant-Bold.ttf?raw=true"
+        "https://github.com/hafontia-zz/Assistant/blob/master/Fonts/TTF/Assistant-ExtraBold.ttf?raw=true"
     )
 }
 
@@ -95,7 +96,9 @@ fig, ax = plt.subplots(figsize=(20, 15))
 
 ax.axis("off")
 (
-    utrecht.sample(frac=0.2).plot(
+    utrecht
+    # .sample(frac=0.2)
+    .plot(
         ax=ax,
         legend=False,
         color=utrecht.color,
@@ -136,7 +139,7 @@ for i, count in enumerate(bar_frame["count"]):
         ha="right",
         weight="bold",
         **bold,
-        size=10,
+        size=16,
         color=background,
         ax=ax_child,
     )
@@ -146,22 +149,20 @@ ax_child.set_yticks(
     fontweight="bold",
     color=text_color,
     **bold,
-    size=12,
+    size=16,
 )
 
 
 # TODO: set title of the child axis later
 # [0.7, 0.2, 0.175, 0.175]
 fig_text(
-    # x=0.7375,
-    # x=0.65,
     x=0.7,
     y=0.39,
     ha="center",
     va="bottom",
     s="Share of amount of shops",
     weight="bold",
-    size=14,
+    size=18,
     zorder=20,
     color=text_color,
     **bold,
