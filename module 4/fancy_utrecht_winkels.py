@@ -4,13 +4,24 @@ from highlight_text import fig_text, ax_text
 from drawarrow import fig_arrow
 import matplotlib.patches as patches
 from matplotlib import style
-
 from mapclassify import Quantiles
-
-style.use("fast")
 import geopandas as gpd
 import pandas as pd
 
+from pyfonts import load_font
+
+regular = {
+    "font": load_font(
+        "https://github.com/hafontia-zz/Assistant/blob/master/Fonts/TTF/Assistant-Regular.ttf?raw=true"
+    )
+}
+bold = {
+    "font": load_font(
+        "https://github.com/hafontia-zz/Assistant/blob/master/Fonts/TTF/Assistant-Bold.ttf?raw=true"
+    )
+}
+
+style.use("fast")
 utrecht = gpd.read_parquet("data/winkels_utrecht.parquet")
 
 
@@ -27,8 +38,6 @@ quantiles = Quantiles(utrecht.loc[lambda x: x.amount > 0, "amount"], k=5)
 # ( 39.00, 514.00] | 198077
 
 
-
-
 quantile_labels = [
     "No shops",
     "1 to 5 shops",
@@ -39,10 +48,7 @@ quantile_labels = [
 ]
 
 
-
-quantile_bins = [
-    1, 5,10,15,20,2500
-]
+quantile_bins = [1, 5, 10, 15, 20, 2500]
 
 utrecht = utrecht.assign(
     quantile_values=pd.cut(
@@ -53,12 +59,9 @@ utrecht = utrecht.assign(
 )
 
 utrecht = utrecht.assign(
-    quantile_values=pd.cut(
-        utrecht.amount, quantile_bins, labels=quantile_labels[1:]
-    )
+    quantile_values=pd.cut(utrecht.amount, quantile_bins, labels=quantile_labels[1:])
     .astype(str)
     .replace("nan", quantile_labels[0])
-    
 )
 
 # second to last is the grey one
@@ -92,9 +95,7 @@ fig, ax = plt.subplots(figsize=(20, 15))
 
 ax.axis("off")
 (
-    utrecht
-    # .sample(frac=0.2)
-    .plot(
+    utrecht.sample(frac=0.2).plot(
         ax=ax,
         legend=False,
         color=utrecht.color,
@@ -104,7 +105,7 @@ ax.axis("off")
 rect = patches.Rectangle(
     (0.60, -0.1),
     0.5,
-    0.6,
+    0.5,
     linewidth=0,
     facecolor=background,
     zorder=0,
@@ -113,7 +114,9 @@ rect = patches.Rectangle(
 
 ax.add_patch(rect)
 
-ax_child = ax.inset_axes([0.65, 0.2, 0.175, 0.175], zorder=10, transform=fig.transFigure)
+ax_child = ax.inset_axes(
+    [0.65, 0.2, 0.175, 0.175], zorder=10, transform=fig.transFigure
+)
 
 ax_child.barh(
     y=bar_frame.quantile_values.astype(str).index,
@@ -121,8 +124,8 @@ ax_child.barh(
     color=bar_frame.color,
 )
 sns.despine(ax=ax_child, left=True, bottom=True)
-ax_child.tick_params(length=0, labelbottom="off", labelsize=10)
-ax_child.set_xticklabels([])
+ax_child.tick_params(length=0, labelbottom="off", labelsize=12)
+ax_child.set_xticklabels([], **regular)
 
 for i, count in enumerate(bar_frame["count"]):
     ax_text(
@@ -132,27 +135,36 @@ for i, count in enumerate(bar_frame["count"]):
         va="center",
         ha="right",
         weight="bold",
-        size=8,
+        **bold,
+        size=10,
         color=background,
         ax=ax_child,
     )
-ax_child.set_yticks([0, 1, 2, 3, 4, 5], labels=quantile_labels[::-1], fontweight="bold", color=text_color)
-
-
+ax_child.set_yticks(
+    [0, 1, 2, 3, 4, 5],
+    labels=quantile_labels[::-1],
+    fontweight="bold",
+    color=text_color,
+    **bold,
+    size=12,
+)
 
 
 # TODO: set title of the child axis later
 # [0.7, 0.2, 0.175, 0.175]
 fig_text(
-    x=0.73,
+    # x=0.7375,
+    # x=0.65,
+    x=0.7,
     y=0.39,
     ha="center",
     va="bottom",
     s="Share of amount of shops",
     weight="bold",
-    size=12,
+    size=14,
     zorder=20,
-    color=text_color
+    color=text_color,
+    **bold,
 )
 fig_text(
     x=0.5,
@@ -161,24 +173,25 @@ fig_text(
     ha="center",
     s="How many shops are within a 20 minute roundtrip walk in Utrecht NL",
     weight="bold",
-    size=32,
-    color=text_color
+    size=40,
+    color=text_color,
+    **bold,
 )
 
 fig_text(
-    x = 0.5,
-    y = 0.10,
+    x=0.5,
+    y=0.10,
     s="sources:\nVisualisation:Sebastiaan Broekema\nBAG register for building polygons, KvK for shop locations Walking distances calculated by isochrone distances using open route service.",
-    size=12,
+    size=16,
     color=text_color,
-    ha="center"
+    ha="center",
+    **regular,
 )
-
 
 
 ax_child.set_facecolor(background)
 fig.set_facecolor(background)
 ax.set_facecolor(background)
-fig.savefig('utrecht.jpeg')
+fig.savefig("utrecht.jpeg")
 fig.savefig("utrecht1200_dpi.png", dpi=1200)
 # plt.show(block=False)
