@@ -182,7 +182,7 @@ fig_text(
 fig_text(
     x=0.5,
     y=0.10,
-    s="sources:\nVisualisation:Sebastiaan Broekema\nBAG register for building polygons, KvK for shop locations Walking distances calculated by isochrone distances using open route service.",
+    s="sources:\nVisualisation:Sebastiaan Broekema\nOpen street map© for building polygons, KvK for shop locations Walking distances calculated by isochrone distances using open route service.",
     size=16,
     color=text_color,
     ha="center",
