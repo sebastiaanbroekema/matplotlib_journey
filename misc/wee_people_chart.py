@@ -65,12 +65,22 @@ smokers_2014 = "<AoiMGkPcOM>\n<RrKRZCbDHU>\n<UAEBNs>KhBY\npLJTTTroNO\nUbdJWZOteJ
 smokers_2024 = "<AoiMGkPcOM>\n<RrKRZCbD>HU\nUAEBNsKhBY\npLJTTTroNO\nUbdJWZOteJ\nUALVcQnrgE\nGQhdUIlVgB\nllaRVLhApH\nJtlSjrCkGG\nZnYKmGLOcH"
 
 
+smokers_2014 = """<JbmkNLVdtb>
+<kDbjJFkHRa>
+<RMphYp>eeSH
+RNEYrFSITG
+MckndkemJq
+rjmXJIhNhr
+ZJFLSPkbom
+jXUoKsWBml
+FmGVskZDec
+fIQtcrZEYT"""
 
+fig, ax = plt.subplots(figsize=(10,8))
 
-fig, ax = plt.subplots(figsize=(10, 10))
 
 ax.axis("off")
-ax.set_ylim(0, 100)
+ax.set_ylim(0, 90)
 ax.set_xlim(0, 100)
 
 fig_text(s="If the Netherlands was 100 people", x=0.5, y=0.9, ha="center", size=32, weight="bold")
@@ -98,20 +108,22 @@ ax_text(
 ax_text(
     75,
     0,
-    s=smokers_2024_random,
+    s=smokers_2014,
     va="bottom",
     ha="center",
     **wee_people,
     size=40,
-    highlight_textprops=[{"color": highlight_color}]*18,
+    # highlight_textprops=[{"color": highlight_color}]*18,
+    highlight_textprops=[{"color": highlight_color}]*3,
     color=non_select,
 )
 
 ax_text(
     x = 25,
-    y = 90,
+    y = 81,
     s = "26 of them would\nhave been <smokers> in 2014",
     ha="center",
+    va='top',
     size=18,
     highlight_textprops=[{"color": highlight_color}]
 )
@@ -119,9 +131,10 @@ ax_text(
 
 ax_text(
     x = 75,
-    y = 90,
-    s = "18 of them would\nhave been <smokers> in 2024",
+    y = 81,
+    s = "26 of them would\nhave been <smokers> in 2014",
     ha="center",
+    va='top',
     size=18,
     highlight_textprops=[{"color": highlight_color}]
 )
@@ -130,5 +143,7 @@ ax_text(
 background = "#c8d6e5"
 fig.set_facecolor(background)
 ax.set_facecolor(background)
+
+fig.savefig("people_chart.png")
 
 plt.show(block=False)
