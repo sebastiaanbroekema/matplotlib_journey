@@ -9,6 +9,7 @@ import string
 import random
 import copy
 
+
 random.seed(42)
 
 chars = [x for x in "abcdefghijklmnopqrstABCDEFGHIJKLMNOPQRSTUVWXYZ"]
@@ -17,17 +18,16 @@ non_select = "#576574"
 highlight_color = "#F79F1F"
 
 
-
 def make_column_of_weepeople(people_preped):
     result = []
-    for i in range(0, len(people_preped), 10):  # Step by 10
-        # Concatenate the next 10 elements
-        result.append(''.join(people_preped[i:i+10]))
+    for i in range(0, len(people_preped), 10):
+        result.append("".join(people_preped[i : i + 10]))
     return "\n".join(result)
 
 
 def generate_population():
     return random.choices(chars, k=100)
+
 
 def prep_individuals(people_list, num_of_replacements):
     people_list_cp = copy.copy(people_list)
@@ -35,8 +35,6 @@ def prep_individuals(people_list, num_of_replacements):
     for index in indices:
         people_list_cp[index] = f"<{people_list_cp[index]}>"
     return people_list_cp
-    
-
 
 
 wee_people = {
@@ -76,20 +74,23 @@ jXUoKsWBml
 FmGVskZDec
 fIQtcrZEYT"""
 
-fig, ax = plt.subplots(figsize=(10,8))
+fig, ax = plt.subplots(figsize=(10, 8))
 
 
 ax.axis("off")
 ax.set_ylim(0, 90)
 ax.set_xlim(0, 100)
 
-fig_text(s="If the Netherlands was 100 people", x=0.5, y=0.9, ha="center", size=32, weight="bold")
-
 fig_text(
-    s="Source: Centraal Bureau voor de Statistiek",
-    x=0.2,
-    y= 0.05
+    s="If the Netherlands was 100 people",
+    x=0.5,
+    y=0.9,
+    ha="center",
+    size=32,
+    weight="bold",
 )
+
+fig_text(s="Source: Centraal Bureau voor de Statistiek", x=0.2, y=0.05)
 
 ax_text(
     25,
@@ -99,10 +100,7 @@ ax_text(
     ha="center",
     **wee_people,
     size=40,
-    highlight_textprops=[
-        {"color": highlight_color}
-
-    ]*26,
+    highlight_textprops=[{"color": highlight_color}] * 26,
     color=non_select,
 )
 ax_text(
@@ -114,29 +112,29 @@ ax_text(
     **wee_people,
     size=40,
     # highlight_textprops=[{"color": highlight_color}]*18,
-    highlight_textprops=[{"color": highlight_color}]*3,
+    highlight_textprops=[{"color": highlight_color}] * 3,
     color=non_select,
 )
 
 ax_text(
-    x = 25,
-    y = 81,
-    s = "26 of them would\nhave been <smokers> in 2014",
+    x=25,
+    y=81,
+    s="26 of them would\nhave been <smokers> in 2014",
     ha="center",
-    va='top',
+    va="top",
     size=18,
-    highlight_textprops=[{"color": highlight_color}]
+    highlight_textprops=[{"color": highlight_color}],
 )
 
 
 ax_text(
-    x = 75,
-    y = 81,
-    s = "26 of them would\nhave been <smokers> in 2014",
+    x=75,
+    y=81,
+    s="26 of them would\nhave been <smokers> in 2014",
     ha="center",
-    va='top',
+    va="top",
     size=18,
-    highlight_textprops=[{"color": highlight_color}]
+    highlight_textprops=[{"color": highlight_color}],
 )
 
 
