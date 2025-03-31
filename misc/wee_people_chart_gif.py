@@ -1,11 +1,12 @@
 """
 Script  to generate waffle charts based on the wee people font.
 The code generates gifs from the charts based on the gif module
-which basically just 
+which basically just
 # https://source.opennews.org/articles/our-font-made-people/
 https://github.com/propublica/weepeople?tab=readme-ov-file#wee-people
 
 """
+
 import random
 
 import numpy as np
@@ -14,6 +15,7 @@ import matplotlib.pyplot as plt
 from highlight_text import ax_text, fig_text
 from pyfonts import load_font
 from PIL import Image
+
 # make the charts reproducable
 # can there be any other number
 random.seed(42)
@@ -35,7 +37,7 @@ def make_column_of_weepeople(people_preped):
     return "\n".join(result)
 
 
-def generate_population(chars:list=chars) -> list:
+def generate_population(chars: list = chars) -> list:
     return random.choices(chars, k=100)
 
 
@@ -43,12 +45,10 @@ def sigmoid(x, k=1, c=0):
     return 1 / (1 + np.exp(-k * (x - c)))
 
 
-
 def calc_alpha_sigmoid(current_frame, start):
     if current_frame < start:
         return 0
     return float(sigmoid((current_frame - start), k=0.5, c=10))
-
 
 
 wee_people = {
@@ -72,7 +72,6 @@ highlights = [
 ]
 
 
-
 @gif.frame
 def create_frame(i):
     fig, ax = plt.subplots(figsize=(10, 8))
@@ -90,7 +89,11 @@ def create_frame(i):
         weight="bold",
     )
 
-    fig_text(s="Source: Centraal Bureau voor de Statistiek\nVisualisation: Sebastiaan Broekema", x=0.2, y=0.05)
+    fig_text(
+        s="Source: Centraal Bureau voor de Statistiek\nVisualisation: Sebastiaan Broekema",
+        x=0.2,
+        y=0.05,
+    )
     highlights_props = [
         {"alpha": calc_alpha_sigmoid(i, x.get("start")), "color": x.get("color")}
         for x in highlights
@@ -107,7 +110,7 @@ def create_frame(i):
         color=non_select_color,
         alpha=0,
     )
-    
+
     if i > 110:
         ax_text(
             x=50,
@@ -119,7 +122,6 @@ def create_frame(i):
             highlight_textprops=[{"color": highlight_color}],
         )
     if i < 105:
-        
         ax_text(
             x=50,
             y=81,
