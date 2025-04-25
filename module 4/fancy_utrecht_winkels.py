@@ -1,13 +1,11 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 from highlight_text import fig_text, ax_text
-from drawarrow import fig_arrow
 import matplotlib.patches as patches
 from matplotlib import style
 from mapclassify import Quantiles
 import geopandas as gpd
 import pandas as pd
-
 from pyfonts import load_font
 
 regular = {
@@ -22,7 +20,7 @@ bold = {
     )
 }
 
-style.use("fast")
+
 utrecht = gpd.read_parquet("data/winkels_utrecht.parquet")
 
 
