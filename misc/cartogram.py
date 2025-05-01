@@ -143,24 +143,100 @@ results = gemeenten.merge(uitslag, left_on="gemeentecode", right_on="gmcode").as
 )
 
 
-results_cartogram = Cartogram(results, "Opgeroepen")
+# results_cartogram = Cartogram(results, "Geldige stemmen")
+# results_cartogram.to_parquet('data/cartogram.parquet')
+
+results_cartogram = gpd.read_parquet('data/cartogram.parquet')
 
 
-fig, axs = plt.subplots(ncols=2)
+
+fig, axs = plt.subplots(figsize=(20,15), ncols=2, )
+
+fig.subplots_adjust(top=0.95, bottom=0.05)
+
+fig_text(
+    x=0.5, 
+    y=0.95, 
+    s="Land does not vote, people do\n<Looking at the results of the 2023 Dutch parliamentary elections>",
+    size=40,
+    ha='center',
+    highlight_textprops=[{"size":30}]
+    )
+
+fig_text(
+    x=0.25, 
+    y = 0.85, 
+    s="Geographically accurate map\nof Dutch Municipalities",
+    size=28,
+    ha='center'
+    )
+
+fig_text(
+    x=0.75, 
+    y = 0.85, 
+    s="Geographically distored map\nby total number of votes cast",
+    size=28,
+    ha='center'
+    )
+
 
 
 ax1 = axs[0]
 
 ax1.axis("off")
 
-results.plot(color=results.color, ax=ax1, edgecolor=results.color)
+results.plot(color=results.color, ax=ax1, 
+            #  edgecolor=results.color
+            edgecolor='k'
+             )
 
 
 ax2 = axs[1]
 
 ax2.axis("off")
 results_cartogram.plot(
-    ax=ax2, color=results_cartogram.color, edgecolor=results_cartogram.color
+    ax=ax2, color=results_cartogram.color, 
+    # edgecolor=results_cartogram.color
+    edgecolor='k'
 )
 
+
+
+
+fig_text(
+    x = 0.25,
+    y = 0.1,
+    s = "source: https://data.openstate.eu\nVisualisation: Sebastiaan Broekema",
+    ha='center'
+)
+
+
+legend_text = "\n".join(
+    [f'<{x}>' for x in color_mapping.keys()]
+)
+
+color_dict = [{"color":x} for _, x in color_mapping.items()]
+
+legend_text = f"<Party with the most votes in the municipality>\n{legend_text}"
+
+
+props = [{"fontweight":"bold"
+
+    }] + color_dict
+
+
+fig_text(
+    x = 0.4,
+    y = 0.3,
+    s = legend_text,
+    ha='left',
+    highlight_textprops=props,
+    size=16
+)
+
+
+
+fig.savefig("cartogram.png", dpi = 300)
 plt.show(block=False)
+
+
