@@ -7,10 +7,25 @@ import seaborn as sns
 from highlight_text import fig_text, ax_text
 from drawarrow import fig_arrow
 from pypalettes import load_cmap
+from pyfonts import load_font
 
 import geopandas as gpd
 
 from cartogram import Cartogram
+
+
+regular = {
+    "font": load_font(
+        "https://github.com/hafontia-zz/Assistant/blob/master/Fonts/TTF/Assistant-Regular.ttf?raw=true"
+    )
+}
+
+bold = {
+    "font": load_font(
+        "https://github.com/hafontia-zz/Assistant/blob/master/Fonts/TTF/Assistant-ExtraBold.ttf?raw=true"
+    )
+}
+
 # kleuren nodig voor
 # PVV (Partij voor de Vrijheid)               257
 # GROENLINKS / Partij van de Arbeid (PvdA)     31
@@ -152,15 +167,17 @@ results_cartogram = gpd.read_parquet('data/cartogram.parquet')
 
 fig, axs = plt.subplots(figsize=(20,15), ncols=2, )
 
+
 fig.subplots_adjust(top=0.95, bottom=0.05)
 
 fig_text(
     x=0.5, 
     y=0.95, 
-    s="Land does not vote, people do\n<Looking at the results of the 2023 Dutch parliamentary elections>",
+    s="Land does not vote, people do\n<Looking at the results of the 2023 Dutch parliamentary elections using a cartogram>",
     size=40,
     ha='center',
-    highlight_textprops=[{"size":30}]
+    highlight_textprops=[{"size":30}],
+    **bold
     )
 
 fig_text(
@@ -168,7 +185,8 @@ fig_text(
     y = 0.85, 
     s="Geographically accurate map\nof Dutch Municipalities",
     size=28,
-    ha='center'
+    ha='center',
+    **regular
     )
 
 fig_text(
@@ -176,15 +194,18 @@ fig_text(
     y = 0.85, 
     s="Geographically distored map\nby total number of votes cast",
     size=28,
-    ha='center'
+    ha='center',
+    **regular
     )
 
+background='#636e72'
+fig.set_facecolor(background)
 
 
 ax1 = axs[0]
 
 ax1.axis("off")
-
+ax1.set_facecolor(background)
 results.plot(color=results.color, ax=ax1, 
             #  edgecolor=results.color
             edgecolor='k'
@@ -207,7 +228,9 @@ fig_text(
     x = 0.25,
     y = 0.1,
     s = "source: https://data.openstate.eu\nVisualisation: Sebastiaan Broekema",
-    ha='center'
+    ha='center',
+    size=14,
+    **regular
 )
 
 
@@ -220,18 +243,17 @@ color_dict = [{"color":x} for _, x in color_mapping.items()]
 legend_text = f"<Party with the most votes in the municipality>\n{legend_text}"
 
 
-props = [{"fontweight":"bold"
+props = [bold] + color_dict
 
-    }] + color_dict
-
-
+ax2.set_facecolor(background)
 fig_text(
     x = 0.4,
     y = 0.3,
     s = legend_text,
     ha='left',
     highlight_textprops=props,
-    size=16
+    size=16,
+    **regular
 )
 
 
