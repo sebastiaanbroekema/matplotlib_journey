@@ -229,7 +229,7 @@ fig_text(
     y = 0.1,
     s = "source: https://data.openstate.eu\nVisualisation: Sebastiaan Broekema",
     ha='center',
-    size=14,
+    size=16,
     **regular
 )
 
@@ -252,7 +252,7 @@ fig_text(
     s = legend_text,
     ha='left',
     highlight_textprops=props,
-    size=16,
+    size=20,
     **regular
 )
 
