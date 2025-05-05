@@ -124,12 +124,12 @@ politieke_partijen = [
 
 
 amount_of_votes_total = [
-    "< >", #padding for plotting
-    "<23,5 % of total vote>", #PVV
-    "<15,8 % of total vote>", # GL PVDA
-    "<15,2 % of total vote>", # VVD
-    "<12,8 % of total vote>", # NSC
-    "<  2,1 % of total vote>" # SGP
+    "< >",  # padding for plotting
+    "<23,5 % of total vote>",  # PVV
+    "<15,8 % of total vote>",  # GL PVDA
+    "<15,2 % of total vote>",  # VVD
+    "<12,8 % of total vote>",  # NSC
+    "<  2,1 % of total vote>",  # SGP
 ]
 
 uitslag = (
@@ -170,44 +170,46 @@ results = gemeenten.merge(uitslag, left_on="gemeentecode", right_on="gmcode").as
 # results_cartogram = Cartogram(results, "Geldige stemmen")
 # results_cartogram.to_parquet('data/cartogram.parquet')
 
-results_cartogram = gpd.read_parquet('data/cartogram.parquet')
+results_cartogram = gpd.read_parquet("data/cartogram.parquet")
 
 
-
-fig, axs = plt.subplots(figsize=(20,15), ncols=2, )
+fig, axs = plt.subplots(
+    figsize=(20, 15),
+    ncols=2,
+)
 
 
 fig.subplots_adjust(top=0.95, bottom=0.05)
 
 fig_text(
-    x=0.5, 
-    y=0.95, 
+    x=0.5,
+    y=0.95,
     s="Land does not vote, people do\n<Looking at the results of the 2023 Dutch parliamentary elections using a cartogram>",
     size=40,
-    ha='center',
-    highlight_textprops=[{"size":30}],
-    **bold
-    )
+    ha="center",
+    highlight_textprops=[{"size": 30}],
+    **bold,
+)
 
 fig_text(
-    x=0.33, 
-    y = 0.85, 
+    x=0.33,
+    y=0.85,
     s="Geographically accurate map\nof Dutch Municipalities",
     size=28,
-    ha='center',
-    **regular
-    )
+    ha="center",
+    **regular,
+)
 
 fig_text(
-    x=0.75, 
-    y = 0.85, 
+    x=0.75,
+    y=0.85,
     s="Geographically distored map\nby total number of votes cast",
     size=28,
-    ha='center',
-    **regular
-    )
+    ha="center",
+    **regular,
+)
 
-background='#636e72'
+background = "#636e72"
 fig.set_facecolor(background)
 
 
@@ -215,39 +217,38 @@ ax1 = axs[0]
 
 ax1.axis("off")
 ax1.set_facecolor(background)
-results.plot(color=results.color, ax=ax1, 
-            #  edgecolor=results.color
-            edgecolor='k'
-             )
+results.plot(
+    color=results.color,
+    ax=ax1,
+    #  edgecolor=results.color
+    edgecolor="k",
+)
 
 
 ax2 = axs[1]
 
 ax2.axis("off")
 results_cartogram.plot(
-    ax=ax2, color=results_cartogram.color, 
+    ax=ax2,
+    color=results_cartogram.color,
     # edgecolor=results_cartogram.color
-    edgecolor='k'
+    edgecolor="k",
 )
-
-
 
 
 fig_text(
-    x = 0.25,
-    y = 0.1,
-    s = "source: https://data.openstate.eu\nVisualisation: Sebastiaan Broekema",
-    ha='center',
+    x=0.25,
+    y=0.1,
+    s="source: https://data.openstate.eu\nVisualisation: Sebastiaan Broekema",
+    ha="center",
     size=16,
-    **regular
+    **regular,
 )
 
 
-legend_text = "\n".join(
-    [f'<{x}>' for x in color_mapping.keys()]
-)
+legend_text = "\n".join([f"<{x}>" for x in color_mapping.keys()])
 
-color_dict = [{"color":x} for _, x in color_mapping.items()]
+color_dict = [{"color": x} for _, x in color_mapping.items()]
 
 legend_text = f"<Party with the most votes in the municipality>\n{legend_text}"
 
@@ -256,31 +257,27 @@ props = [bold] + color_dict
 
 ax2.set_facecolor(background)
 fig_text(
-    x = 0.38,
-    y = 0.3,
-    s = legend_text,
-    ha='left',
+    x=0.38,
+    y=0.3,
+    s=legend_text,
+    ha="left",
     highlight_textprops=props,
     size=20,
-    **regular
+    **regular,
 )
 # legend table
 
 legend_table_text = "\n".join(amount_of_votes_total)
 fig_text(
-    x = 0.63,
-    y = 0.3,
-    s = legend_table_text,
-    ha='left',
+    x=0.63,
+    y=0.3,
+    s=legend_table_text,
+    ha="left",
     highlight_textprops=props,
     size=20,
-    **regular
+    **regular,
 )
 
 
-
-
-fig.savefig("cartogram.png", dpi = 300)
+fig.savefig("cartogram.png", dpi=300)
 # plt.show(block=False)
-
-
