@@ -3,12 +3,15 @@ name = "matplotlib-journey"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
+    "cartogram>=1.0.0",
     "drawarrow>=0.0.3",
     "geopandas>=1.0.1",
     "geoplot>=0.5.1",
+    "gif>=23.3.0",
     "highlight-text>=0.2",
+    "jupyter>=1.1.1",
     "matplotlib>=3.10.1",
     "pandas>=2.2.3",
     "pyarrow>=19.0.1",
