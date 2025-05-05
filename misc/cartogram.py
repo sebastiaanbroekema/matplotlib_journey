@@ -123,6 +123,15 @@ politieke_partijen = [
 ]
 
 
+amount_of_votes_total = [
+    "< >", #padding for plotting
+    "<23,5 % of total vote>", #PVV
+    "<15,8 % of total vote>", # GL PVDA
+    "<15,2 % of total vote>", # VVD
+    "<12,8 % of total vote>", # NSC
+    "<  2,1 % of total vote>" # SGP
+]
+
 uitslag = (
     uitslag.groupby("gmcode")[agg_cols]
     .sum()
@@ -181,7 +190,7 @@ fig_text(
     )
 
 fig_text(
-    x=0.25, 
+    x=0.33, 
     y = 0.85, 
     s="Geographically accurate map\nof Dutch Municipalities",
     size=28,
@@ -247,9 +256,21 @@ props = [bold] + color_dict
 
 ax2.set_facecolor(background)
 fig_text(
-    x = 0.4,
+    x = 0.38,
     y = 0.3,
     s = legend_text,
+    ha='left',
+    highlight_textprops=props,
+    size=20,
+    **regular
+)
+# legend table
+
+legend_table_text = "\n".join(amount_of_votes_total)
+fig_text(
+    x = 0.63,
+    y = 0.3,
+    s = legend_table_text,
     ha='left',
     highlight_textprops=props,
     size=20,
@@ -258,7 +279,8 @@ fig_text(
 
 
 
+
 fig.savefig("cartogram.png", dpi = 300)
-plt.show(block=False)
+# plt.show(block=False)
 
 
