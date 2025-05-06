@@ -3,11 +3,8 @@
 
 # https://python-cartogram.readthedocs.io/quickstart.html#fine-tuning-the-distortions
 import matplotlib.pyplot as plt
-import seaborn as sns
-from highlight_text import fig_text, ax_text
-from drawarrow import fig_arrow
-from pypalettes import load_cmap
-from pyfonts import load_font
+from highlight_text import fig_text
+from pyfonts import  load_google_font
 
 import geopandas as gpd
 
@@ -15,15 +12,13 @@ from cartogram import Cartogram
 
 
 regular = {
-    "font": load_font(
-        "https://github.com/hafontia-zz/Assistant/blob/master/Fonts/TTF/Assistant-Regular.ttf?raw=true"
+    "font": load_google_font(
+        "Assistant"
     )
 }
 
 bold = {
-    "font": load_font(
-        "https://github.com/hafontia-zz/Assistant/blob/master/Fonts/TTF/Assistant-ExtraBold.ttf?raw=true"
-    )
+    "font": load_google_font("Assistant", weight="bold")
 }
 
 # kleuren nodig voor

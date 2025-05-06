@@ -15,7 +15,7 @@ dependencies = [
     "matplotlib>=3.10.1",
     "pandas>=2.2.3",
     "pyarrow>=19.0.1",
-    "pyfonts>=0.0.2",
+    "pyfonts>=1.0.0",
     "pypalettes>=0.1.5",
     "seaborn>=0.13.2",
 ]
