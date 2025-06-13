@@ -13,6 +13,9 @@ COORDINATES = """
   5° 6' 16.1280'' E
 """
 
+gemeenten = gpd.read_parquet('data/gemeenten_zonder_water.parquet')
+
+utrecht_gemeente = gemeenten.loc[lambda x: x.gemeentenaam == "Utrecht"].geometry.iloc[0]
 
 bold = load_google_font("Economica", weight="bold")
 regular = load_google_font("Economica")
@@ -25,7 +28,9 @@ wegen_net = gpd.read_parquet("data/wegennet.parquet")
 
 wegen_net.GME_NAAM.sort_values().unique()
 
-utrecht = wegen_net.loc[lambda x: x.GME_NAAM == "Utrecht"]
+utrecht = (
+    wegen_net.loc[lambda x: x.geometry.within(utrecht_gemeente, align=False)]
+)
 
 neonpink = "#FF10F0"
 
@@ -52,3 +57,4 @@ fig_text(
 )
 
 plt.savefig("Utrecht_netwerk.png", dpi=600)
+plt.close()
