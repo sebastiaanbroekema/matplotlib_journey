@@ -10,7 +10,7 @@ import geopandas as gpd
 
 COORDINATES = """
 52° 5' 34.3536'' N 
- 5° 6' 16.1280'' E
+  5° 6' 16.1280'' E
 """
 
 
@@ -40,13 +40,13 @@ fig.set_facecolor(background)
 ax.set_facecolor(background)
 ax.axis("off")
 
-fig_text(0.5, 0.93, s="Utrecht", color=neonpink, va="center", ha="center", size=40,  font=bold)
-fig_text(0.75, 0.93, s=COORDINATES, color=neonpink, va="center", ha="center", size=16,  font=bold)
+fig_text(0.5, 0.93, s="Utrecht", color=neonpink, va="center", ha="right", size=40,  font=bold)
+fig_text(0.51, 0.93, s=COORDINATES, color=neonpink, va="center", ha="left", size=16,  font=bold)
 
 fig_text(
     0.6,
     0.1,
-    s="Visualisation: Sebastiaan Broekema\n Source: Nationaal Wegen Bestand",
+    s="Visualisation: Sebastiaan Broekema\nSource: Nationaal Wegen Bestand",
     color=neonpink,
     font=bold
 )
