@@ -3,14 +3,25 @@ import seaborn as sns
 from highlight_text import fig_text, ax_text
 from drawarrow import fig_arrow
 from pypalettes import load_cmap
-
+from pyfonts import load_google_font
 
 import geopandas as gpd
 
 
-wegen_net = gpd.read_file("data/01-06-2025/Wegvakken/Wegvakken.dbf")
+COORDINATES = """
+52° 5' 34.3536'' N 
+ 5° 6' 16.1280'' E
+"""
 
-wegen_net.to_parquet("data/wegennet.parquet")
+
+bold = load_google_font("Economica", weight="bold")
+regular = load_google_font("Economica")
+
+# wegen_net = gpd.read_file("data/01-06-2025/Wegvakken/Wegvakken.dbf")
+
+# wegen_net.to_parquet("data/wegennet.parquet")
+
+wegen_net = gpd.read_parquet("data/wegennet.parquet")
 
 wegen_net.GME_NAAM.sort_values().unique()
 
@@ -29,14 +40,15 @@ fig.set_facecolor(background)
 ax.set_facecolor(background)
 ax.axis("off")
 
-fig_text(0.5, 0.93, s="Utrecht", color=neonpink, va="center", ha="center", size=40)
-
+fig_text(0.5, 0.93, s="Utrecht", color=neonpink, va="center", ha="center", size=40,  font=bold)
+fig_text(0.75, 0.93, s=COORDINATES, color=neonpink, va="center", ha="center", size=16,  font=bold)
 
 fig_text(
     0.6,
     0.1,
-    s="Visualisation: Sebastiaan Broekema\n Source:Nationaal Wegen Bestand",
+    s="Visualisation: Sebastiaan Broekema\n Source: Nationaal Wegen Bestand",
     color=neonpink,
+    font=bold
 )
 
 plt.savefig("Utrecht_netwerk.png", dpi=600)
